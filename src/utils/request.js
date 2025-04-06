@@ -1,5 +1,5 @@
 const options = {
-    baseUrl: "http://192.168.2.22:5001/mch/v1",
+    baseUrl: "http://192.168.100.19:5001/mch/v1",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -43,6 +43,24 @@ const options = {
       } catch (err) {
         console.error(err);
         return null;
+      }
+    }
+
+    async delete({ url, bodyObj, headersOption}) {
+      try {
+        const response = await fetch(`${options.baseUrl}${url}`, {
+          method: "DELETE",
+          headers: {
+            ...headersOption,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bodyObj),
+        });
+        const json = await response.json();
+        return { response: response, data: json };
+      } catch (err) {
+        console.error(err);
       }
     }
   
