@@ -8,31 +8,43 @@ export default function HomeScreen({ navigation, route }) {
 
   useEffect(() => {
     const handleActions = async () => {
-      const scannedId = Number(route.params?.scannedData);
+      const scannedId = route.params?.scannedData;
       const action = route.params?.scanMode;
 
       if (!scannedId || !action) return ;
+      console.log("test:", scannedId, action)
 
       try {
-        const { response, data } = await findItems();
+        const { response, data } = await findItems(scannedId);
+        console.log("reponse :", response)
         if (response.status === 200) {
-          const foundItem = data.data.find(item => item.id === scannedId);
-
-          if (!foundItem) {
+          console.log(data.data[0].id)
+          if (!data) {
             return Alert.alert("Not found", "No item matches the scanned data.");
           }
 
           if (action === "Find") {
+            const date = new Date(data.data[0].created_at);
+            const formattedDate = date.toLocaleString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true,
+            });
 
 const message = `
-ID: ${foundItem.id}
-Product Name: ${foundItem.productname}
-Category: ${foundItem.category}
-Department: ${foundItem.department}
-Assigned To: ${foundItem.assigned_to}
-Status: ${foundItem.status}
+ID: ${data.data[0].id}
+Serial Number: ${data.data[0].serial_number}
+Department: ${data.data[0].department}
+Category: ${data.data[0].category}
+Sub Category: ${data.data[0].subCategory}
+Product Name: ${data.data[0].productName}
+Created At: ${formattedDate}
+Status: ${data.data[0].status}
+Assigned To: ${data.data[0].assignedTo}
 `;
-        
           Alert.alert("Item Lookup", message);
           } else if (action === "Delete") {
             Alert.alert(
@@ -43,7 +55,7 @@ Status: ${foundItem.status}
                   text: "Delete",
                   style: "destructive",
                   onPress: async () => {
-                    const deleteId = await deleteItem(foundItem.id);
+                    const deleteId = await deleteItem(scannedId);
                     if (deleteId.response.status === 200) {
                       Alert.alert("Deleted", "Item successfully deleted.");
                     } else {
@@ -71,7 +83,6 @@ Status: ${foundItem.status}
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Welcome to Inventory App</Text>
       <Button title="Find Item" onPress={() => navigation.navigate('Scanner', { mode: 'Find' })} />
-      <Button title="Delete Item" onPress={() => navigation.navigate('Scanner', { mode: 'Delete' })} />
     </View>
   );
 }
