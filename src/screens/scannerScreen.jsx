@@ -1,4 +1,3 @@
-import React from 'react';
 import BarcodeScannerComponent from '../components/BarcodeScanner';
 
 export default function ScannerScreen({ navigation, route }) {
@@ -12,6 +11,6 @@ export default function ScannerScreen({ navigation, route }) {
   };
 
   return (
-    <BarcodeScannerComponent onScanned={handleScanned} />
+      <BarcodeScannerComponent onScanned={handleScanned} />
   );
 }

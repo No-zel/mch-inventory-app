@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useState, Fragment } from 'react';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   CameraView,
   useCameraPermissions,
 } from 'expo-camera';
+import { useNavigation } from "@react-navigation/native";
 
 export default function BarcodeScannerComponent({ onScanned }) {
+  const navigation = useNavigation();
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
 
@@ -30,7 +32,9 @@ export default function BarcodeScannerComponent({ onScanned }) {
   };
 
   return (
+    <Fragment> 
     <View style={styles.container}>
+
       <CameraView
         style={styles.camera}
         facing="back"
@@ -40,6 +44,14 @@ export default function BarcodeScannerComponent({ onScanned }) {
         onBarcodeScanned={handleBarCodeScanned}
       />
 
+      <View style={styles.backContainer}> 
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.backText}>
+            Back
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.overlay}>
         <View style={styles.scannerBox} />
       </View>
@@ -48,6 +60,7 @@ export default function BarcodeScannerComponent({ onScanned }) {
         <Button title="Scan Again" onPress={() => setScanned(false)} />
       )}
     </View>
+    </Fragment>
   );
 }
 
@@ -84,4 +97,15 @@ const styles = StyleSheet.create({
     bottom: 30,
     alignSelf: 'center',
   },
+  backText: {
+    fontSize: 20,
+    fontWeight: "900",
+    color: "#FFFFFF",
+  },
+  backContainer: {
+    position: "absolute",
+    top: 60,
+    left: 30, 
+    zIndex: 10,
+  }
 });

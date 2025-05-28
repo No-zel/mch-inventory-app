@@ -1,19 +1,21 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
-import HomeScreen from './src/screens/home';
-import ScannerScreen from './src/screens/scannerScreen';
-
-const Stack = createNativeStackNavigator();
+import AuthLayout from "./src/layout/AuthLayout";
+import AllRoutes from "./src/routes/all_routes";
+import { GlobalProvider} from "./src/store/provider";
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Scanner" component={ScannerScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <GlobalProvider>
+      <NavigationContainer>
+        <AuthLayout>
+          <RootSiblingParent>
+            <AllRoutes />
+          </RootSiblingParent>
+        </AuthLayout>
+      </NavigationContainer>
+    </GlobalProvider>
   );
 }
