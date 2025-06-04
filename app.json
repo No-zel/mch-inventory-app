@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "mch-application",
+    "name": "AMS",
     "slug": "mch-application",
+    "icon": "src/assets/mch_logo.png",
     "version": "1.0.0",
     "plugins": [
       [
@@ -11,7 +12,23 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "69c2d6cf-a957-4ce9-84f7-cf0d3d808cb7"
+      }
+    },
+    "android": {
+      "package": "com.nozel.mchapplication"
+    }
   }
 }

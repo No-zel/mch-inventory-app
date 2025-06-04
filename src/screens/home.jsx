@@ -31,7 +31,6 @@ export default function HomeScreen({ navigation, route }) {
 
       try {
         const { response, data } = await findItems(scannedId);
-        console.log("reponse :", response)
         if (response.status === 200) {
           console.log(data.data[0].id)
           if (!data) {

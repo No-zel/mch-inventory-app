@@ -16,8 +16,8 @@ const Login = () => {
   const api = new APIRequest();
   const { userDispatch } = useContext(UserContext);
   const [loginForm, setLoginForm] = useState({
-    username: "a",
-    password: "a",
+    // username: "a",
+    // password: "a",
   });
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -33,19 +33,19 @@ const Login = () => {
     }
     setIsLoading(true);
     try {
-      const { response, data } = await api.post({
+      console.log("Trying to Loging in", loginForm)
+      const { data, error, response } = await api.post({
         url: "/account/login/application",
         bodyObj: loginForm,
       });
-
-      if (response.status === 200) {
+      if (data?.token) {
         setLoginForm({ username: "", password: "" });
         userDispatch({ type: SET_USER, payload: { user: data?.data, token: data?.token } });
       } else {
-        Alert.alert("Username or Password is incorrect.");
+        return Alert.alert("Login Info is Incorrect");
       }
     } catch (err) {
-      Alert.alert("Server Error.");
+      return Alert.alert("Server Error", err.message || "Check logs for details.");
     } finally {
       setIsLoading(false); // End loading
     }
@@ -64,7 +64,6 @@ const Login = () => {
                 setLoginForm((prev) => ({ ...prev, username: text.replace(/\s/g, '') }))
               }
               style={styles.loginInput}
-              placeholder="no-zel"
             />
           </View>
           <View style={styles.loginInputWrapper}>
@@ -143,6 +142,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
     padding: 10,
+    color: "#000000",
     borderColor: "#000000",
   },
   loginBtnSubmit: {
